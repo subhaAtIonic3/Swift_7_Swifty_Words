@@ -139,8 +139,9 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        loadLevel()
+        DispatchQueue.global().async {
+            self.loadLevel()
+        }
     }
     
     @objc func letterTapped(_ sender: UIButton) {
@@ -164,8 +165,6 @@ class ViewController: UIViewController {
                 currentAnswer.text = ""
                 score += 1
                 correctAnswerCount += 1
-                
-                
                 if correctAnswerCount % 7 == 0 {
                     let ac = UIAlertController(title: "Well done!", message: "Are you ready for the next level?", preferredStyle: .alert)
                     ac.addAction(UIAlertAction(title: "Let's go!", style: .default, handler: levelUp))
@@ -217,14 +216,18 @@ class ViewController: UIViewController {
             }
         }
         
-        cluesLabel.text = clueString.trimmingCharacters(in: .whitespacesAndNewlines)
-        answersLabel.text = solutionString.trimmingCharacters(in: .whitespacesAndNewlines)
+        DispatchQueue.main.async {
+            self.cluesLabel.text = clueString.trimmingCharacters(in: .whitespacesAndNewlines)
+            self.answersLabel.text = solutionString.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
         
         letterBits.shuffle()
         
         if letterBits.count == letterButtons.count {
             for i in 0 ..< letterButtons.count {
-                letterButtons[i].setTitle(letterBits[i], for: .normal)
+                DispatchQueue.main.async {
+                    self.letterButtons[i].setTitle(letterBits[i], for: .normal)
+                }
             }
         }
     }
