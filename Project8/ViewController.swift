@@ -144,14 +144,18 @@ class ViewController: UIViewController {
         }
     }
     
+    func animateButton(show: Bool, sender: UIButton) {
+        UIView.animate(withDuration: 1) {
+            sender.alpha = show ?  1.0 : 0.1
+            sender.isUserInteractionEnabled = show
+        }
+    }
+    
     @objc func letterTapped(_ sender: UIButton) {
         guard let buttonTitle = sender.titleLabel?.text else { return }
         currentAnswer.text = currentAnswer.text?.appending(buttonTitle)
         activatedButtons.append(sender)
-        UIView.animate(withDuration: 1) {
-            sender.alpha = 0.1
-            sender.isUserInteractionEnabled = false
-        }
+        animateButton(show: false, sender: sender)
     }
     
     @objc func submitTapped(_ sender: UIButton) {
@@ -186,10 +190,7 @@ class ViewController: UIViewController {
         currentAnswer.text = ""
         
         for btn in activatedButtons {
-            UIView.animate(withDuration: 1) {
-                btn.alpha = 1
-                btn.isUserInteractionEnabled = true
-            }
+            animateButton(show: true, sender: btn)
         }
         
         activatedButtons.removeAll()
@@ -245,10 +246,7 @@ class ViewController: UIViewController {
         loadLevel()
         
         for btn in letterButtons {
-            UIView.animate(withDuration: 1) {
-                btn.alpha = 1
-                btn.isUserInteractionEnabled = true
-            }
+            animateButton(show: true, sender: btn)
         }
     }
     
